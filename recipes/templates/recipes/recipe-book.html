@@ -1,0 +1,80 @@
+{%extends 'home.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {%block meta%}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {%endblock meta%}
+
+    {%block styles%}
+    <link rel="stylesheet" href="{% static 'styles/recipe-book.css'%}">
+    {%endblock styles%}
+
+    <!-- font awesome link starts -->
+    <script src="https://kit.fontawesome.com/9c3d7ef638.js" crossorigin="anonymous"></script>
+    <!-- font awesome link ends -->
+
+    <!-- custom script -->
+    {%block script%}
+    <script src="{% static 'scripts/recipe-book.js'%}" defer></script>
+    {%endblock script%}
+
+    {%block title%}
+    <title>Recipe-Expo | {{recipe_book.user.username}} Recipe Book</title>
+    {%endblock title%}
+</head>
+<body>
+    {%block content%}
+    <div class="confirmation-field" id="confirmation-field">
+        <div class="inner">
+            <h2 class="confirmation-recipe"></h2>
+            <div class="options">
+                <form action="" id="cancel-confirmation">
+                    <button>No </button>
+                </form>
+                <form action=" {% url 'remove_recipe' %} " id="confirm-removal" method="post">
+                    {%csrf_token%}
+                    <input type="hidden" name="recipe_id" value>
+                    <button type="submit" class="confirm-remove-btn">YES, I Am Sure</button>
+                </form>
+            </div>
+        </div>      
+        </form> 
+    </div>
+    <main>
+        <div class="recipe-book">
+            <h1><i class="fa fa-book"></i>My Recipe Book</h1>
+        </div>
+
+        <div class="recipes-wrapper recipe-book-wrapper">
+            {% if book_recipes %}
+                {%for recipe in book_recipes%}
+                    <div class="recipe">
+                        <div class="recipe-img">
+                            <img src="{{recipe.recipe_image.url}}" alt="">
+                        </div>
+                        <div class="recipe-info">
+                            <h3>{{recipe.category}}</h3>
+                            <h2>{{recipe.recipe_name}}</h2>
+                            <h4><i class="fa fa-clock"></i> 10 Mins</h4>
+                            <form action="" class="remove-form">
+                                <input type="hidden" value="{{recipe.recipe_name}}" id="recipe_name">
+                                <input type="hidden" value="{{recipe.id}}" id="recipe_id">
+                                <button class="remove-btn" type="submit" >Remove Recipe</button>
+                            </form>
+                        </div>
+                    </div>
+                {%endfor%}
+            {%else%}
+            <p></p>
+            <h3 style="text-align: center; display: inline-block;">You Have Saved No Recipe in Your Book</h3>
+            <p></p>
+            {%endif%}
+        </div>
+    </main>
+    {%endblock content%}
+</body>
+</html>

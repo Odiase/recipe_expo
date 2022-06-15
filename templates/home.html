@@ -1,0 +1,372 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {%block meta%}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {%endblock meta%}
+
+    <!-- custom styles starts -->
+    <link rel="stylesheet" href="{% static 'styles/general.css'%}">
+    {%block styles%}
+    <link rel="stylesheet" href="{% static 'styles/recipe-book.css'%}">
+    <link rel="stylesheet" href="{% static 'styles/home.css'%}">
+    {%endblock styles%}
+    <!-- custom styles ends -->
+
+    <!-- google font links starts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Nunito:ital,wght@0,300;0,400;1,200;1,400;1,500;1,600&display=swap" rel="stylesheet">
+    <!-- google font links ends -->
+
+    <!-- custom script starts-->
+    {%block script%}
+    <script src="{% static 'scripts/home.js'%}" defer></script>
+    {%endblock script%}
+    <!-- custoim script ends -->
+
+    <!-- font awesome link starts -->
+    <script src="https://kit.fontawesome.com/9c3d7ef638.js" crossorigin="anonymous"></script>
+    <!-- font awesome link ends -->
+
+    {%block title%}
+    <title>Recipe-Expo | Welcome To Your Favourite Recipe Site</title>
+    {%endblock title%}
+</head>
+<body>
+    <!-- header starts -->
+    <header>
+        <h1><a href=" {% url 'home' %} "><i class="fa fa-utensils"></i>Recipe-Expo</a></h1>
+
+        <nav class="navbar">
+            <a href=" {% url 'home' %} ">Home</a>
+            <a href="">About</a>
+            <a href=" {% url 'create_recipe' %} ">Write A Recipe</a>
+            <a href=" {% url 'recipe_book' %} ">Recipe book</a>
+            {%if user.is_authenticated%}
+            <a href=" {% url 'logout'%} ">Logout</a>
+            {%else%}
+            <a href=" {% url 'sign_up'%} ">Sign Up</a>
+            <a href=" {% url 'login' %} ">Login</a>
+            {%endif%}
+        </nav>
+
+        <div class="search-bar">
+            <form action="">
+                <input type="search">
+                <button type="submit">
+                    <i class="fa fa-search"></i></button>
+            </form>
+        </div>
+
+        <!-- icons -->
+        <div class="icons">
+            <h4 onclick="toggle_menu()" id="menu-btn"><i class="fa fa-bars"></i></h4>
+        </div>
+    </header>
+    <!-- header ends -->
+    {%block content%}
+
+    <!-- home section starts -->
+    <section class="home-section">
+        <div class="sliders">
+            <div class="slide">
+                <div class="slide-text">
+                    <h2>Fried Rice</h2>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. <br> Ut iure aspernatur soluta, eaque expedita debitis voluptate minus temporibus.</p>
+                    <button><a href="">Recipe</a></button>
+                </div>
+                <div class="slide-img">
+                    <img src="{% static 'site-images/fried-rice.jpg'%}" alt="" srcset="">
+                </div>
+                <div class="layer">
+
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-text">
+                    <h2>Cinammon Rolls</h2>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. <br> Ut iure aspernatur soluta, eaque expedita debitis voluptate minus temporibus.</p>
+                    <button><a href="">Recipe</a></button>
+                </div>
+                <div class="slide-img">
+                    <img src="{% static 'site-images/cinnamon-rolls.jpg'%}" alt="" srcset="">
+                </div>
+                <div class="layer">
+
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-text">
+                    <h2>Fruit Juice</h2>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. <br> Ut iure aspernatur soluta, eaque expedita debitis voluptate minus temporibus.</p>
+                    <button><a href="">Recipe</a></button>
+                </div>
+                <div class="slide-img">
+                    <img src="{% static 'site-images/fruit-juice.jpg'%}" alt="" srcset="">
+                </div>
+                <div class="layer">
+
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-text">
+                    <h2>Homemade Youghurt</h2>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. <br> Ut iure aspernatur soluta, eaque expedita debitis voluptate minus temporibus.</p>
+                    <button><a href="">Recipe</a></button>
+                </div>
+                <div class="slide-img">
+                    <img src="{% static 'site-images/youghurt.jpg'%}" alt="" srcset="">
+                </div>
+                <div class="layer">
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- home section ends -->
+
+
+
+    <!-- popular Recipes starts -->
+    <section class="popular-recipes">
+        <small>Recipes</small>
+        <h2>Popular Recipes</h2>
+        <div class="recipes-wrapper">
+            {%for recipe in recipes%}
+            <div class="recipe">
+                <div class="recipe-img">
+                    <img src="{{recipe.recipe_image.url}}" alt="{{recipe.recipe_name}} recipe image">
+                </div>
+                <div class="recipe-info">
+                    <h3>{{recipe.category}}</h3>
+                    <h2>{{recipe.recipe_name}}</h2>
+                    <h4><span><i class="fa fa-clock"></i></span> 10 Mins</h4>
+                    <form action="">
+                        <button><a href=" {{recipe.get_absolute_url}} ">See Recipe</a></button>
+                    </form>
+                </div>
+            </div>
+            {%endfor%}
+
+            <div class="recipe">
+                <div class="recipe-img">
+                    <img src="site-images/papaya.jpg" alt="">
+                </div>
+                <div class="recipe-info">
+                    <h3>Family Dinner</h3>
+                    <h2>Fried Polenta Panazella WIth Tomato, Basil and Burrata</h2>
+                    <h4><span><i class="fa fa-clock"></i></span> 10 Mins</h4>
+                    <form action="">
+                        <button>See Recipe</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="recipe">
+                <div class="recipe-img">
+                    <img src="site-images/fried-rice.jpg" alt="">
+                </div>
+                <div class="recipe-info">
+                    <h3>Family Dinner</h3>
+                    <h2>Fried Polenta Panazella WIth Tomato, Basil and Burrata</h2>
+                    <h4><span><i class="fa fa-clock"></i></span> 10 Mins</h4>
+                    <form action="">
+                        <button>See Recipe</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="recipe">
+                <div class="recipe-img">
+                    <img src="site-images/salad.jpg" alt="">
+                </div>
+                <div class="recipe-info">
+                    <h3>Family Dinner</h3>
+                    <h2>Fried Polenta Panazella WIth Tomato, Basil and Burrata</h2>
+                    <h4><span><i class="fa fa-clock"></i></span> 10 Mins</h4>
+                    <form action="">
+                        <button>See Recipe</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="recipe">
+                <div class="recipe-img">
+                    <img src="site-images/donut.jpg" alt="">
+                </div>
+                <div class="recipe-info">
+                    <h3>Family Dinner</h3>
+                    <h2>Fried Polenta Panazella WIth Tomato, Basil and Burrata</h2>
+                    <h4><span><i class="fa fa-clock"></i></span> 10 Mins</h4>
+                    <form action="">
+                        <button>See Recipe</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="recipe">
+                <div class="recipe-img">
+                    <img src="site-images/waffles.jpg" alt="">
+                </div>
+                <div class="recipe-info">
+                    <h3>Family Dinner</h3>
+                    <h2>Fried Polenta Panazella WIth Tomato, Basil and Burrata</h2>
+                    <h4><span><i class="fa fa-clock"></i></span> 10 Mins</h4>
+                    <form action="">
+                        <button>See Recipe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- popular Recipes ends -->
+
+
+
+    <!-- drinks recipes starts -->
+     <section class="popular-recipes">
+        <h2>Drinks</h2>
+        <div class="recipes-wrapper">
+
+            <div class="recipe">
+                <div class="recipe-img">
+                    <img src="site-images/cocktail.jpg" alt="">
+                </div>
+                <div class="recipe-info">
+                    <h3>Family Dinner</h3>
+                    <h2>Fried Polenta Panazella WIth Tomato, Basil and Burrata</h2>
+                    <h4><span><i class="fa fa-clock"></i></span> 10 Mins</h4>
+                    <form action="">
+                        <button>See Recipe</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="recipe">
+                <div class="recipe-img">
+                    <img src="site-images/fruit-juice.jpg" alt="">
+                </div>
+                <div class="recipe-info">
+                    <h3>Family Dinner</h3>
+                    <h2>Fried Polenta Panazella WIth Tomato, Basil and Burrata</h2>
+                    <h4><span><i class="fa fa-clock"></i></span> 10 Mins</h4>
+                    <form action="">
+                        <button>See Recipe</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="recipe">
+                <div class="recipe-img">
+                    <img src="site-images/papaya.jpg">
+                </div>
+                <div class="recipe-info">
+                    <h3>Family Dinner</h3>
+                    <h2>Fried Polenta Panazella WIth Tomato, Basil and Burrata</h2>
+                    <h4><span><i class="fa fa-clock"></i></span> 10 Mins</h4>
+                    <form action="">
+                        <button>See Recipe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- drinks recipes ends -->
+
+
+
+    <!-- pastries recipes starts -->
+    <section class="popular-recipes">
+        <h2>Pastries</h2>
+        <div class="recipes-wrapper">
+
+            <div class="recipe">
+                <div class="recipe-img">
+                    <img src="site-images/waffles.jpg" alt="">
+                </div>
+                <div class="recipe-info">
+                    <h3>Family Dinner</h3>
+                    <h2>Fried Polenta Panazella WIth Tomato, Basil and Burrata</h2>
+                    <h4><span><i class="fa fa-clock"></i></span> 10 Mins</h4>
+                    <form action="">
+                        <button>See Recipe</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="recipe">
+                <div class="recipe-img">
+                    <img src="site-images/cookie.jpg ">
+                </div>
+                <div class="recipe-info">
+                    <h3>Family Dinner</h3>
+                    <h2>Fried Polenta Panazella WIth Tomato, Basil and Burrata</h2>
+                    <h4><span><i class="fa fa-clock"></i></span> 10 Mins</h4>
+                    <form action="">
+                        <button>See Recipe</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="recipe">
+                <div class="recipe-img">
+                    <img src="site-images/donut.jpg" alt="">
+                </div>
+                <div class="recipe-info">
+                    <h3>Family Dinner</h3>
+                    <h2>Fried Polenta Panazella WIth Tomato, Basil and Burrata</h2>
+                    <h4><span><i class="fa fa-clock"></i></span> 10 Mins</h4>
+                    <form action="">
+                        <button>See Recipe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--  pastries recipes ends -->
+
+
+    <!-- write a recipe section starts -->
+    <section class="write-a-recipe">
+        <img src="{% static 'site-images/cocktail.jpg'%}" alt="">
+        <div class="write-layer">
+            <h2>Have A Recipe In Mind?</h2>
+            <button><a href=" {% url 'create_recipe' %} ">Kindly Share</a></button>
+        </div>
+    </section>
+    <!-- write a recipe section ends -->
+
+    {%endblock content%}
+    <!-- footer section starts -->
+    <footer>
+        <div class="footer-category">
+            <h3>Quick Links</h3>
+            <ul>
+                {%if user.is_authenticated%}
+                    <li><a href=" {% url 'logout' %} ">Logout</a></li>
+                {%else%}
+                    <li><a href=" {% url 'sign_up' %} ">Sign Up</a></li>
+                    <li><a href=" {% url 'login' %} ">Login</a></li>
+                {%endif%}
+                <li><a href="">About</a></li>
+                <li><a href=" {% url 'create_recipe' %} ">Write A Recipe</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-category">
+            <h3>Other Links</h3>
+            <ul>
+                <li><a href="">My Recipe Book</a></li>
+                <li><a href="">Search</a></li>
+                <li><a href="">Tech Stack</a></li>
+                <li><a href="">APi</a></li>
+            </ul>
+        </div>
+    </footer>
+    <!-- footer section ends -->
+</body>
+</html>

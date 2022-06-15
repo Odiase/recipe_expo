@@ -1,0 +1,200 @@
+@import url("https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Nunito:ital,wght@0,300;0,400;1,200;1,400;1,500;1,600&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  outline: none;
+  text-decoration: none;
+  list-style: none;
+  text-transform: capitalize;
+  font-family: 'Nunito', sans-serif;
+  scroll-padding-top: 80px;
+  scroll-behavior: smooth;
+}
+
+html {
+  font-size: 65.5%;
+}
+
+header {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 1.2em 1.1em;
+  -webkit-box-shadow: 1px 1px 5px black;
+          box-shadow: 1px 1px 5px black;
+  z-index: 999;
+}
+
+header h1 a {
+  color: #a00a0a;
+}
+
+header h4 {
+  cursor: pointer;
+}
+
+header .icons h4 {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.navbar {
+  position: absolute;
+  top: -100vh;
+  -webkit-transition: .5s;
+  transition: .5s;
+  z-index: 2;
+  background-color: #a00a0a;
+  color: white;
+}
+
+.navbar a {
+  padding: 10px 12px;
+  font-weight: bold;
+  -webkit-transition: .4s;
+  transition: .4s;
+  color: white;
+  display: block;
+  border-bottom: 1px solid #c8c8c8;
+}
+
+.navbar a:hover {
+  background-color: #b7b701;
+  color: white;
+}
+
+.navbar a:last-child {
+  border-bottom: none;
+}
+
+.icons h4 {
+  font-size: 1.5rem;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.icons h4:hover {
+  color: #a00a0a;
+}
+
+.search-bar form {
+  width: 100%;
+}
+
+.search-bar form input {
+  padding: 5px 7px;
+  border: 1px solid #a00a0a;
+}
+
+.search-bar form button {
+  border: none;
+  background: none;
+  font-size: 1.5rem;
+  margin-left: 8px;
+  -webkit-transition: .4s;
+  transition: .4s;
+  cursor: pointer;
+}
+
+.search-bar form button:hover {
+  color: #a00a0a;
+}
+
+@media (min-width: 700px) {
+  header {
+    padding: 1.3em 2em;
+  }
+}
+
+@media (min-width: 800px) {
+  #menu-btn {
+    display: none;
+  }
+  .navbar {
+    position: initial;
+    top: auto;
+    text-align: center;
+    background-color: white;
+  }
+  .navbar a {
+    display: inline-block;
+    color: black;
+    margin-right: 12px;
+    border-radius: 5px;
+  }
+  .navbar a:hover {
+    background-color: #a00a0a;
+  }
+}
+
+
+footer {
+  width: 100%;
+  margin-top: 40px;
+  padding: 20px 10px;
+  padding-top: 40px;
+  background-color: #a00a0a;
+  color: white;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+footer .footer-category {
+  -ms-flex-preferred-size: 50%;
+      flex-basis: 50%;
+}
+
+footer h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+footer a {
+  color: white;
+  font-size: 1.2rem;
+}
+
+footer a:hover {
+  color: #b7b701;
+}
+
+
+.recipe-name {
+  font-family: 'Frank Ruhl Libre';
+  font-weight: lighter;
+}
+
+.fa {
+  font-size: 3rem;
+  width: 50px;
+  height: 50px;
+  position: relative;
+  color: green;
+  padding: 5px;
+}
+
+@media (min-width: 700px) {
+  html {
+    font-size: 70%;
+  }
+}
+/*# sourceMappingURL=general.css.map */

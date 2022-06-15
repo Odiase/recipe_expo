@@ -1,0 +1,137 @@
+//variables
+$red:rgb(160, 10, 10);
+$yellow:rgb(183, 183, 1);
+
+h1{
+  font-size: 2.7rem;
+}
+h2{
+    font-size: 2.4rem;
+}
+
+html{
+    font-size: 80%;
+}
+
+
+.faint{
+    color: rgb(150,150,150);
+}
+
+.single-recipe-wrapper{
+    padding: 20px 10px;
+    width: 100%;
+    margin: auto;
+    max-width: 800px;
+}
+.recipe-details{
+    form{
+        display: inline-block;
+        margin-left: 5px;
+    }
+    
+    button{
+        margin-top: 10px;
+        background: $red;
+        color: white;
+        padding: 8px 10px;
+        border: none;
+        transition: .4s;
+
+        &:last-child{
+            background: $yellow;
+            cursor: pointer;
+        }
+
+        &:hover{
+            opacity: .8;
+        }
+    }
+}
+.recipe-featured-image{
+    width: 100%;
+    max-width: 800px;
+    height: 700px;
+    margin-top: 20px;
+
+    img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+}
+.preparation-info{
+    width: 100%;
+
+    span{
+        color: $red;
+    }
+
+    .time-field{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+    }
+}
+
+.ingredients{
+    margin-top: 30px;
+
+    ul{
+        padding: 20px;
+    }
+
+    ul li{
+        list-style: disc;
+        margin: 5px 0;
+        font-size: 1.5rem;
+    }
+}
+
+.method{
+    margin-top: 30px;
+}
+
+.comments{
+    margin-top: 70px;
+
+    h3{
+        margin-bottom: 8px;
+    }
+
+    form{
+        width: 100%;
+        
+
+        input[type = text]{
+            width: 70%;
+            padding: 8px 10px;
+            border: 1px solid $red;
+        }
+        input[type = submit]{
+            padding: 9px 11px;
+            background: $red;
+            color: white;
+            border: none;
+        }
+    }
+
+    .other-comments{
+        width: 100%;
+        margin-top: 30px;
+
+        h3{
+            margin-bottom: 10px;
+        }
+
+        .comment{
+            overflow-wrap: break-word;
+            padding: 10px;
+            border: 1px solid black;
+            margin: 8px 0;
+        }
+    }
+}

@@ -1,0 +1,117 @@
+@import url("https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Nunito:ital,wght@0,300;0,400;1,200;1,400;1,500;1,600&display=swap");
+.recipes-wrapper {
+  width: 100%;
+  margin-top: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.recipe {
+  position: relative;
+  -ms-flex-preferred-size: 33%;
+      flex-basis: 33%;
+  height: 400px;
+  margin: 40px 0;
+}
+
+.recipe .recipe-img {
+  position: relative;
+  overflow: hidden;
+  width: inherit;
+  height: inherit;
+}
+
+.recipe .recipe-img img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.recipe .recipe-img .recipe-layer {
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  height: 0;
+  background-color: rgba(183, 183, 1, 0.5);
+  -webkit-transition: .4s;
+  transition: .4s;
+  opacity: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.recipe .recipe-img .recipe-layer h4 {
+  display: inline-block;
+  margin: 0 30px;
+  font-size: 20px;
+  font-family: 'Frank Ruhl Libre', serif;
+}
+
+.recipe .recipe-img .recipe-layer button {
+  padding: 15px 35px;
+  margin-top: 20px;
+  border: none;
+  font-weight: bolder;
+  background-color: #a00a0a;
+  -webkit-transition: .3s;
+  transition: .3s;
+  font-size: 15px;
+}
+
+.recipe .recipe-img .recipe-layer button a {
+  color: white;
+}
+
+.recipe .recipe-img .recipe-layer button:hover {
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
+}
+
+.recipe .recipe-img:hover .recipe-layer {
+  opacity: 1;
+  height: 100%;
+}
+
+.recipe .recipe-text h3 {
+  margin-top: 10px;
+  font-family: 'Frank Ruhl Libre', serif;
+}
+
+@media (min-width: 800px) {
+  .recipes-wrapper {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+  }
+}
+/*# sourceMappingURL=recipe.css.map */

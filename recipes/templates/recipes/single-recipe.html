@@ -1,0 +1,94 @@
+{% extends 'home.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {%block meta%}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {%endblock meta%}
+
+    {%block styles%}
+    <link rel="stylesheet" href="{% static 'styles/single-recipe.css'%}">
+    {%endblock styles%}
+
+    {%block title%}
+    <title>Recipe-Expo | {{recipe.recipe_name}}</title>
+    {%endblock title%}
+</head>
+<body>
+    {%block content%}
+    <main>
+        <div class="single-recipe-wrapper">
+            <div class="recipe-details">
+                <h1 class="recipe-name">{{recipe.recipe_name}}</h1> <br>
+                <h3 class=" faint">{{recipe.recipe_info}}</h3> <br>
+                <button>{{recipe.category}}</button>
+                {%if recipe.user == user%}
+                <button><a href=" {%url 'update_recipe' recipe.slug recipe.id %} " style="color: white;">Update Recipe</a></button>
+                {%else%}
+                <form action=" {% url 'add_to_recipe_book' %} " method="post">
+                    {%csrf_token%}
+                    <input type="hidden" value="{{recipe.id}}" name = "recipe_id">
+                    <button>Add To Recipe Book</button>
+                </form>
+                {%endif%}
+            </div>
+            <br>
+            <hr>
+            <div class="recipe-featured-image">
+                <img src="{{recipe.recipe_image.url}}" alt="">
+            </div>
+            <div class="preparation-info">
+                <div class="time-field">
+                   <div class="time">
+                       <h3><span>Prep Time:</span> {{recipe.preparation_time}} mins</h3>
+                   </div>
+                   <div class="time">
+                       <h3><span>Cooking Time:</span> {{recipe.cooking_time}} mins</h3>
+                   </div>
+                   <div class="time">
+                       <h3><span>Total Time:</span> {{total_time}} mins</h3>
+                   </div> 
+                </div>
+                <h3><span>Servings</span>: {{recipe.serving}}</h3>
+            </div>
+
+            <br><br>
+            <div class="">
+                {{recipe.recipe_details|safe}}
+            </div>
+
+
+            <!-- comments -->
+            <section class="comments">
+                <h3>Leave A Comment</h3>
+                {%if user.is_authenticated%}
+                    <form action="" method = "POST">
+                        {%csrf_token%}
+                        <input type="text" placeholder="Leave A Comment" name="comment_message">
+                        <input type="submit" value="POST">
+                    </form>
+                {%else%}
+                <p> Pls <strong><a href=" {% url 'login' %} " style="color: #a00a0a;">Login </a></strong> or <strong><a href=" {% url 'sign_up' %} " style="color: #a00a0a;">Sign Up</a></strong> To Be Able To Comment On This Recipe</p>
+                {%endif%}
+
+                <div class="other-comments">
+                    <h3>Comments({{num_of_comments}})</h3>
+                    {%for comment in recipe_comments%}
+                        <div class="comment">
+                            <h4>@{{comment.user.username}}</h4>
+                            <br>
+                            <p>{{comment.message}}</p>
+                            <br>
+                            <h4>{{comment.created|timesince}} ago</h4>
+                        </div>
+                    {%endfor%}
+                </div>
+            </section>
+        </div>
+    </main>
+    {%endblock content%}
+</body>
+</html>

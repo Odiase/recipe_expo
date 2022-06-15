@@ -1,0 +1,48 @@
+{%extends 'home.html' %}
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {%block meta%}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {%endblock meta%}
+    <!-- custom css  -->
+    {%block styles%}
+    <link rel="stylesheet" href="{% static 'styles/auth.css'%}">
+    {%endblock styles%}
+
+    {%block title%}
+    <title>Recipe-Expo | Sign Up</title>
+    {%endblock title%}
+</head>
+<body>
+    {%block content%}
+    <div class="login-container">
+        <h1>Sign Up</h1>
+        <div class="form-wrapper">
+            <form action="" method = "post">
+                {%csrf_token%}
+                <div class="field">
+                    <label for="username">Username:</label>
+                    <input type="text" name="username" id="username">
+                </div>
+                <div class="field">
+                    <label for="password1">Password:</label>
+                    <input type="password" name="password1" id="password1">
+                </div>
+                <div class="field">
+                    <label for="password">Password (Again):</label>
+                    <input type="password" name="password2" id="password">
+                </div>
+                <input type="submit" value="SUBMIT">
+            </form>
+            <div class="other-link">
+                <h4>Already Have An Account? <span><a href=" {% url 'login' %} ">LOGIN</a></span></h4>
+            </div>
+        </div>
+    </div>
+    {%endblock content%}
+</body>
+</html>
