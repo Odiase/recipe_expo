@@ -1,5 +1,4 @@
 import uuid
-from click import help_option
 from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
@@ -17,6 +16,7 @@ class Recipe(models.Model):
         ('Native', 'Native'),
         ('Pastries', 'Pastries'),
         ('Soup','Soup'),
+        ('Veggies', 'Veggies'),
     )
     servings  = (
         ("1 to 3","1 to 3"),
@@ -32,31 +32,40 @@ class Recipe(models.Model):
     recipe_details = RichTextField()
     preparation_time = models.IntegerField(help_text="Time to prepare the ingredients, e.g 10 (for 10 minutes)")
     cooking_time = models.IntegerField(help_text="Time to cook the ingredients, e.g 10 (for 10 minutes)")
+    total_time = 0
     category = models.CharField(choices=recipe_categories, max_length=20)
     serving = models.CharField(choices = servings, max_length=15)
+    created = models.DateTimeField(auto_now_add=True, blank = True, null = True, editable=False)
+    updated = models.DateTimeField(auto_now = True, blank = True, null = True, editable=False)
     id = models.UUIDField(default=uuid.uuid4, unique = True, primary_key=True)
     slug = models.SlugField(unique = True, max_length = 200)
+
+    class Meta:
+        ordering = ['-created']
 
     def __str__(self):
         return self.recipe_name
     
+    # gets the link to a single recipe view
     def get_absolute_url(self):
         return reverse('single_recipe',args = [str(self.slug),str(self.id)])
-    
+
     def get_recent_comments(self):
         comments = self.comments.all()[0:10]
         return comments
     
+    # checking if the current recipe instance is added to a user's recipe book
     def added_to_recipe_book(self,user):
         if RecipeBook.objects.filter(user = user, recipes = self).exists():
             return True
         else:
             return False
-    
+
     def num_of_likes(self):
         likes = self.recipe_likes.all().count()
         return likes
     
+    # does a user already like this recipe ??
     def already_liked_recipe(self,user):
         if Like.objects.filter(user = user, recipe = self).exists():
             return True
@@ -66,6 +75,8 @@ class Recipe(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.recipe_name)
+        if self.total_time == 0:
+            self.total_time = self.preparation_time + self.cooking_time
         return super(Recipe,self).save(*args, **kwargs)
 
 
@@ -93,3 +104,9 @@ class Comment(models.Model):
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete = models.SET_NULL, null = True)
     recipe = models.ForeignKey('Recipe', on_delete=models.CASCADE, related_name="recipe_likes")
+
+    class Meta:
+        ordering = ['recipe']
+    
+    def __str__(self):
+        return f"{self.recipe.recipe_name} like"

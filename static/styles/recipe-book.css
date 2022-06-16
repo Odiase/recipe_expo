@@ -58,6 +58,10 @@
   background-color: #1c881c;
 }
 
+.recipe-book-main {
+  min-height: calc(100vh - 235px);
+}
+
 main {
   width: 100%;
 }

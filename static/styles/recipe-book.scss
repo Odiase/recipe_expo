@@ -53,6 +53,10 @@ $yellow:rgb(183, 183, 1);
     }
 }
 
+.recipe-book-main{
+    min-height: calc(100vh - 235px);
+}
+
 main{
     width: 100%;
 }

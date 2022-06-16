@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden, HttpResponseNotFound
+from django.http import Http404, HttpResponseForbidden, HttpResponseNotFound
 
 from .models import Recipe, Comment, RecipeBook, Like
 from .forms import RecipeForm
@@ -17,6 +17,7 @@ def search_recipe(request):
     else:
         recipes_results_by_name = ""
         recipes_results_by_category = ""
+        search_input = ""
 
     context = {
         'search_result_by_name': recipes_results_by_name,
@@ -27,7 +28,10 @@ def search_recipe(request):
 
 
 def single_recipe(request, slug, id):
-    recipe = Recipe.objects.get(id = id)
+    try:
+        recipe = Recipe.objects.get(id = id)
+    except:
+        return HttpResponseNotFound()
     total_time = recipe.preparation_time + recipe.cooking_time
     recipe_comments = recipe.get_recent_comments()
     added_to_recipe_book = False
@@ -65,6 +69,9 @@ def create_recipe(request):
             new_recipe = form.save(commit = False)
             new_recipe.user = request.user
             new_recipe.save()
+
+            recipe_book,created = RecipeBook.objects.get_or_create(user = request.user)
+            recipe_book.recipes.add(new_recipe)
             return redirect('single_recipe',new_recipe.slug, new_recipe.id)
     context  = {
         'form':form

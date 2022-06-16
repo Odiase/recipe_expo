@@ -1,3 +1,5 @@
+import random
+
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -9,9 +11,24 @@ from recipes.models import Recipe
 # Create your views here.
 def home(request):
     recipes = Recipe.objects.all()
+    popular_recipes = recipes[0:3]
+    drinks = Recipe.objects.filter(category__icontains = "drinks")[0:3]
+    pastries = Recipe.objects.filter(category__icontains = "pastries")[0:3]
+    healthy_and_tasty = Recipe.objects.filter(category__icontains = "healthy")[0:3]
+
+    featured_recipes = []
+    for i in range(4):
+        featured_recipes.append(random.choice(popular_recipes))
+        featured_recipes.append(random.choice(drinks))
+        featured_recipes.append(random.choice(pastries))
+        featured_recipes.append(random.choice(healthy_and_tasty))
+
 
     context = {
-        "recipes":recipes,
+        "recipes":popular_recipes,
+        "drinks":drinks,
+        "pastries":pastries,
+        "featured_recipes":featured_recipes,
     }
     return render(request,'home.html', context)
 
