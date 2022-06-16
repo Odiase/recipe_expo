@@ -168,8 +168,4 @@ main {
         flex-basis: 30%;
   }
 }
-
-.recipe-book-wrapper{
-  min-height: calc(100vh - 240px);
-}
 /*# sourceMappingURL=recipe-book.css.map */

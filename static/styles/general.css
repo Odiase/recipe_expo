@@ -7,14 +7,32 @@
   outline: none;
   text-decoration: none;
   list-style: none;
-  text-transform: capitalize;
   font-family: 'Nunito', sans-serif;
   scroll-padding-top: 80px;
   scroll-behavior: smooth;
+  line-height: 2rem;
 }
 
 html {
   font-size: 65.5%;
+}
+
+.special-btn {
+  background-color: white;
+}
+
+.special-btn a {
+  color: #a00a0a;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.special-btn:hover {
+  background-color: #a00a0a;
+}
+
+.special-btn:hover a {
+  color: white;
 }
 
 header {
@@ -26,14 +44,14 @@ header {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   padding: 1.2em 1.1em;
   -webkit-box-shadow: 1px 1px 5px black;
-          box-shadow: 1px 1px 5px black;
+  box-shadow: 1px 1px 5px black;
   z-index: 999;
 }
 
@@ -139,7 +157,6 @@ header .icons h4 {
   }
 }
 
-
 footer {
   width: 100%;
   margin-top: 40px;
@@ -151,16 +168,16 @@ footer {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: space-evenly;
-      -ms-flex-pack: space-evenly;
-          justify-content: space-evenly;
+  -ms-flex-pack: space-evenly;
+  justify-content: space-evenly;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 footer .footer-category {
   -ms-flex-preferred-size: 50%;
-      flex-basis: 50%;
+  flex-basis: 50%;
 }
 
 footer h3 {
@@ -176,7 +193,6 @@ footer a {
 footer a:hover {
   color: #b7b701;
 }
-
 
 .recipe-name {
   font-family: 'Frank Ruhl Libre';

@@ -47,6 +47,22 @@ class Recipe(models.Model):
         comments = self.comments.all()[0:10]
         return comments
     
+    def added_to_recipe_book(self,user):
+        if RecipeBook.objects.filter(user = user, recipes = self).exists():
+            return True
+        else:
+            return False
+    
+    def num_of_likes(self):
+        likes = self.recipe_likes.all().count()
+        return likes
+    
+    def already_liked_recipe(self,user):
+        if Like.objects.filter(user = user, recipe = self).exists():
+            return True
+        else:
+            return False
+    
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.recipe_name)
@@ -72,3 +88,8 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.recipe.recipe_name} comment {self.id}"
+
+
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete = models.SET_NULL, null = True)
+    recipe = models.ForeignKey('Recipe', on_delete=models.CASCADE, related_name="recipe_likes")

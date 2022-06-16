@@ -44,7 +44,7 @@
         </div>      
         </form> 
     </div>
-    <main>
+    <main class="recipe-book-main">
         <div class="recipe-book">
             <h1><i class="fa fa-book"></i>My Recipe Book</h1>
         </div>
@@ -64,6 +64,7 @@
                                 <input type="hidden" value="{{recipe.recipe_name}}" id="recipe_name">
                                 <input type="hidden" value="{{recipe.id}}" id="recipe_id">
                                 <button class="remove-btn" type="submit" >Remove Recipe</button>
+                                <button class="remove-btn special-btn" type="submit" style="margin-left: 10px;" > <a href=" {{recipe.get_absolute_url}} ">See Recipe</a> </button>
                             </form>
                         </div>
                     </div>

@@ -2,6 +2,11 @@ body {
   background: rgba(160, 10, 10, 0.04);
 }
 
+.search-main {
+  min-height: calc(100vh - 235px);
+  margin-top: 20px;
+}
+
 .search-header {
   width: 100%;
   padding: 20px 10px;
@@ -39,6 +44,7 @@ body {
   font-size: 2.3rem;
   font-weight: lighter;
   margin-left: 20px;
+  text-align: center;
 }
 
 .search-result-wrapper button a {

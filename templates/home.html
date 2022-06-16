@@ -55,8 +55,9 @@
         </nav>
 
         <div class="search-bar">
-            <form action="">
-                <input type="search">
+            <form action=" {% url 'search_recipe' %} " method="post">
+                {%csrf_token%}
+                <input type="search" name="search_input">
                 <button type="submit">
                     <i class="fa fa-search"></i></button>
             </form>
@@ -146,7 +147,7 @@
                     <h2>{{recipe.recipe_name}}</h2>
                     <h4><span><i class="fa fa-clock"></i></span> 10 Mins</h4>
                     <form action="">
-                        <button><a href=" {{recipe.get_absolute_url}} ">See Recipe</a></button>
+                        <button class="special-btn"><a href=" {{recipe.get_absolute_url}} ">See Recipe</a></button>
                     </form>
                 </div>
             </div>
