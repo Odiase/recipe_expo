@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ckeditor',
+    'rest_framework',
+    'api.apps.ApiConfig',
     'base.apps.BaseConfig',
     'recipes.apps.RecipesConfig'
 ]

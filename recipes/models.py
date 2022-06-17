@@ -32,7 +32,6 @@ class Recipe(models.Model):
     recipe_details = RichTextField()
     preparation_time = models.IntegerField(help_text="Time to prepare the ingredients, e.g 10 (for 10 minutes)")
     cooking_time = models.IntegerField(help_text="Time to cook the ingredients, e.g 10 (for 10 minutes)")
-    total_time = 0
     category = models.CharField(choices=recipe_categories, max_length=20)
     serving = models.CharField(choices = servings, max_length=15)
     created = models.DateTimeField(auto_now_add=True, blank = True, null = True, editable=False)
@@ -75,8 +74,6 @@ class Recipe(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.recipe_name)
-        if self.total_time == 0:
-            self.total_time = self.preparation_time + self.cooking_time
         return super(Recipe,self).save(*args, **kwargs)
 
 

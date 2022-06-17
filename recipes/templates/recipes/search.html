@@ -34,14 +34,14 @@
             </form>
         </div>
         <section class="search-result-wrapper">
-            {% if search_result_by_name or search_result_by_category%}
-            <h2>Search Result</h2>
+            {% if search_input %}
+            <h2>Your Search "{{search_input|truncatewords:3}}" Resulted In {{number_of_results}} Results</h2>
             {%else%}
-            <h2>Your Search "{{search_input|truncatewords:3}}" Resulted In 0 Result</h2>
+            <h2>Search Results</h2>
             {% endif %}
             <br>
             <div class="recipes-wrapper">
-                {% for recipe in search_result_by_name %}
+                {% for recipe in search_results %}
                     <div class="recipe">
                         <div class="recipe-img">
                             <img src="{{recipe.recipe_image.url}}" alt="">
@@ -53,22 +53,6 @@
                                 <button><a href=" {{recipe.get_absolute_url}} ">See Recipe</a></button>
                         </div>
                     </div>
-                {% endfor %}
-                {% for recipe in search_result_by_category %}
-                    {% if recipe in search_result_by_name%}
-                    {% else %}
-                        <div class="recipe">
-                            <div class="recipe-img">
-                                <img src="{{recipe.recipe_image.url}}" alt="">
-                            </div>
-                            <div class="recipe-info">
-                                <h3>{{recipe.category}}</h3>
-                                <h2> {{recipe.recipe_name}} </h2>
-                                <h4><i class="fa fa-clock"></i> 10 Mins</h4>
-                                    <button><a href=" {{recipe.get_absolute_url}} ">See Recipe</a></button>
-                            </div>
-                        </div>
-                    {%endif%}
                 {% endfor %}
             </div>
         </section>

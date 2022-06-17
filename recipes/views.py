@@ -1,4 +1,6 @@
+from unicodedata import category
 from django.shortcuts import render,redirect
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseForbidden, HttpResponseNotFound
 
@@ -12,17 +14,18 @@ def search_recipe(request):
         search_input = request.POST['search_input']
         if len(search_input) == 0:
             return redirect('search_recipe')
-        recipes_results_by_name = Recipe.objects.filter(recipe_name__icontains = search_input)
-        recipes_results_by_category = Recipe.objects.filter(category__icontains = search_input)
+        search_results = Recipe.objects.filter(
+            Q(recipe_name__icontains = search_input) |
+            Q(category__icontains = search_input)
+        )
     else:
-        recipes_results_by_name = ""
-        recipes_results_by_category = ""
+        search_results = ""
         search_input = ""
 
     context = {
-        'search_result_by_name': recipes_results_by_name,
-        'search_result_by_category':recipes_results_by_category,
-        'search_input':search_input
+        'search_results':search_results,
+        'search_input':search_input,
+        'number_of_results':len(search_results)
     }
     return render(request,"recipes/search.html", context)
 
