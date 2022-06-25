@@ -12,8 +12,8 @@ from .serializers import RecipeSerializer
 def get_routes(request): 
     routes = [
         'GET /api/',
-        'GET /api/recipe/:id/',
-        'GET /api/recipe/search/:search_input/'
+        'GET /api/recipe/:< recipe_id >/',
+        'GET /api/recipe/search/<: search_word>/'
     ]
     return Response(routes)
 

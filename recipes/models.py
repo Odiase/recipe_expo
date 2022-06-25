@@ -5,6 +5,7 @@ from django.template.defaultfilters import slugify
 from django.urls import reverse
 from ckeditor.fields import RichTextField
 from django_resized import ResizedImageField
+from embed_video.fields import EmbedVideoField
 
 # Create your models here
 
@@ -26,16 +27,17 @@ class Recipe(models.Model):
     )
 
     user = models.ForeignKey(User,on_delete=models.SET_NULL, related_name = "my_recipes", null = True)
-    recipe_name = models.CharField(max_length=200, help_text="Name Of Recipe")
+    recipe_name = models.CharField(max_length=200)
     recipe_info = models.TextField(max_length=1000, help_text="Give Some Information About This recipe", blank=True, null = True)
-    recipe_image = ResizedImageField(size = [500,500],upload_to = "uploads/recipe_images", force_format = "jpeg", quality = 100)
-    recipe_details = RichTextField()
+    recipe_image = ResizedImageField(size = [600,600],upload_to = "uploads/recipe_images", force_format = "jpeg", quality = 100)
+    recipe_preparation = RichTextField()
     preparation_time = models.IntegerField(help_text="Time to prepare the ingredients, e.g 10 (for 10 minutes)")
     cooking_time = models.IntegerField(help_text="Time to cook the ingredients, e.g 10 (for 10 minutes)")
     category = models.CharField(choices=recipe_categories, max_length=20)
     serving = models.CharField(choices = servings, max_length=15)
     created = models.DateTimeField(auto_now_add=True, blank = True, null = True, editable=False)
     updated = models.DateTimeField(auto_now = True, blank = True, null = True, editable=False)
+    youtube_video_url = EmbedVideoField(blank = True, null =True)
     id = models.UUIDField(default=uuid.uuid4, unique = True, primary_key=True)
     slug = models.SlugField(unique = True, max_length = 200)
 
@@ -77,8 +79,15 @@ class Recipe(models.Model):
         return super(Recipe,self).save(*args, **kwargs)
 
 
+class ApiRecipe(models.Model):
+    id = models.CharField(max_length=200, primary_key=True)
+    recipe_url = models.URLField()
+    type = "api_recipe"
+
+
 class RecipeBook(models.Model):
     recipes = models.ManyToManyField(Recipe)
+    api_recipes = models.ManyToManyField(ApiRecipe)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="my_recipe_book")
 
     def __str__(self):

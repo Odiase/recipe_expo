@@ -2,18 +2,40 @@ const navbar = document.querySelector(".navbar");
 const slides = document.querySelectorAll(".slide");
 const slider_container = document.querySelector(".sliders");
 
+const mobile_search_bar = document.getElementById("mobile-search");
+
 // mobile menu toggle functionality
 function toggle_menu(){
-    if(navbar.style.top != "65px"){
-        navbar.style.top = "65px"
+    if(navbar.style.top != "75px"){
+        navbar.style.top = "75px"
     }
     else{
         navbar.style.top = "-100vh"
     }
 }
 
+
+let show_mobile_search_bar = () =>{
+    if(mobile_search_bar.style.top != "70px"){
+        mobile_search_bar.style.top = "70px"
+    }else{
+        mobile_search_bar.style.top = "-100%"
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 let height = window.innerHeight // gets the initial height of the window
-if(slides){
+if(slides && slider_container){
     function slide_down(){
         /*scrolls the slide container by the current value of the height variablee ( i.e the height of the window)*/
         slider_container.scroll(0,height);

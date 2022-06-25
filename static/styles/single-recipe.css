@@ -90,8 +90,71 @@
   margin-top: 30px;
 }
 
+.likes {
+  width: 100%;
+  text-align: center;
+}
+
+.likes form button {
+  padding: 15px 45px;
+  font-weight: bolder;
+  background-color: #a00a0a;
+  color: white;
+  border: 2px solid #a00a0a;
+  border-radius: 10px;
+  -webkit-transition: .3s;
+  transition: .3s;
+  cursor: pointer;
+}
+
+.likes form button:hover {
+  background-color: white;
+  color: #a00a0a;
+}
+
+.share-links-wrapper {
+  margin-top: 20px;
+  padding: 15px;
+}
+
+.share-links-wrapper h4 {
+  font-weight: bolder;
+  text-align: center;
+}
+
+.share-links-wrapper .links {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-top: 7px;
+}
+
+.share-links-wrapper a {
+  padding: 1px 5px;
+  border-radius: 3px;
+  background-color: #a00a0a;
+  margin-right: 10px;
+  color: white;
+  -webkit-transition: .3s;
+  transition: .3s;
+  font-weight: bold;
+  border: 1px solid #a00a0a;
+  font-size: 1.3rem;
+}
+
+.share-links-wrapper a:hover {
+  background-color: white;
+  color: #a00a0a;
+}
+
 .comments {
-  margin-top: 70px;
+  margin-top: 30px;
 }
 
 .comments h3 {

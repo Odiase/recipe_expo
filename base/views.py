@@ -16,12 +16,12 @@ def home(request):
     pastries = Recipe.objects.filter(category__icontains = "pastries")[0:3]
     healthy_and_tasty = Recipe.objects.filter(category__icontains = "healthy")[0:3]
 
+    random_category_choices = [popular_recipes, drinks, pastries, healthy_and_tasty]
+
     featured_recipes = []
     for i in range(4):
-        featured_recipes.append(random.choice(popular_recipes))
-        featured_recipes.append(random.choice(drinks))
-        featured_recipes.append(random.choice(pastries))
-        featured_recipes.append(random.choice(healthy_and_tasty))
+        category = random.choice(random_category_choices)
+        featured_recipes.append(random.choice(category))
 
 
     context = {
@@ -29,6 +29,7 @@ def home(request):
         "drinks":drinks,
         "pastries":pastries,
         "featured_recipes":featured_recipes,
+        "healthy_and_tasty":healthy_and_tasty,
     }
     return render(request,'home.html', context)
 
@@ -36,7 +37,7 @@ def home(request):
 def sign_up(request):
     if request.user.is_authenticated:
         return redirect('home')
-    # form = UserForm()
+
     if request.method == "POST":
         username = request.POST['username']
         password1 = request.POST['password1']
@@ -80,4 +81,5 @@ def Login(request):
 
 def Logout(request):
     logout(request)
+    
     return redirect('home')

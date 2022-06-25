@@ -1,5 +1,6 @@
 {% extends 'home.html' %}
 {% load static %}
+{%load embed_video_tags%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,8 +24,8 @@
     <main>
         <div class="single-recipe-wrapper">
             <div class="recipe-details">
-                <h1 class="recipe-name">{{recipe.recipe_name}}</h1> <br>
-                <h3 class=" faint">{{recipe.recipe_info}}</h3> <br>
+                <h1 class="recipe-name">{{recipe.recipe_name}}</h1>
+                <h4 class=" faint">{{recipe.recipe_info}}</h4>
                 <button>{{recipe.category}}</button>
                 {%if recipe.user == user%}
                 <button><a href=" {%url 'update_recipe' recipe.slug recipe.id %} " style="color: white;">Update Recipe</a></button>
@@ -43,7 +44,7 @@
                         </form>
                     {%endif%}
                 {%endif%}
-                <button> Likes ({{recipe.num_of_likes}})</button>
+                <button> <i class="fa fa-heart"></i> {{recipe.num_of_likes}}</button>
             </div>
             <br>
             <hr>
@@ -67,50 +68,61 @@
 
             <br><br>
             <div class="">
-                {{recipe.recipe_details|safe}}
+                {{recipe.recipe_preparation|safe}}
+            </div>
+
+
+            <!-- youtube url -->
+            <div class="youtube-video-wrapper">
+                <br>
+                <div class="">{% video recipe.youtube_video_url 'small' %}</div>
             </div>
 
 
             <!-- likes section -->
 
             {% if liked_recipe %}
-            {%else%}
-                <section class="likes" style="width: 100%; text-align: center;">
-                    <br><br><br><br>
+            {% else %}
+                <section class="likes">
+                    <br><br>
                     <form action=" {% url 'like_recipe' recipe.id%} " method="post">
-                        {%csrf_token%}
-                        <button type="submit" style="padding: 15px 45px; 
-                        font-weight: bolder;
-                        background-color: #a00a0a;
-                        color: white;
-                        border: none;
-                        ">LIKE</button>
+                        {% csrf_token %}
+                        <button type="submit"><i class="fa fa-heart"></i> LIKE</button>
                     </form>
                 </section>
             {% endif %}
 
+            <div class="share-links-wrapper">
+                <h4>SHARE: </h4>
+                <div class="links">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=127.0.0.1:8000/recipes/{{recipe.slug}}/{{recipe.id}}" class="share_link" title = "{{recipe.recipe_name}}" target="blank"><i class="fa fa-facebook-square"></i></a>
+                    <a href="" class="share_link"><i class="fa fa-whatsapp"></i></a>
+                    <a href="" class="share_link"><i class="fa fa-instagram"></i></a>
+                    <a href="" class="share_link"><i class="fa fa-twitter"></i></a>
+                </div>
+            </div>
+
             <!-- comments -->
             <section class="comments">
-                <h3>Leave A Comment</h3>
+                <hr> <br>
+                <h3>Leave A Review</h3>
                 {%if user.is_authenticated%}
                     <form action="" method = "POST">
                         {%csrf_token%}
-                        <input type="text" placeholder="Leave A Comment" name="comment_message">
+                        <input type="text" placeholder="Leave A Review On This Recipe" name="comment_message">
                         <input type="submit" value="POST">
                     </form>
                 {%else%}
-                <p> Pls <strong><a href=" {% url 'login' %} " style="color: #a00a0a;">Login </a></strong> or <strong><a href=" {% url 'sign_up' %} " style="color: #a00a0a;">Sign Up</a></strong> To Be Able To Comment On This Recipe</p>
+                <p> Pls <strong><a href=" {% url 'login' %} " style="color: #a00a0a;">Login </a></strong> or <strong><a href=" {% url 'sign_up' %} " style="color: #a00a0a;">Sign Up</a></strong> To Leave A Review On This Recipe</p>
                 {%endif%}
 
                 <div class="other-comments">
-                    <h3>Comments({{num_of_comments}})</h3>
+                    <h3>Reviews({{num_of_comments}})</h3>
                     {%for comment in recipe_comments%}
-                        <div class="comment">
-                            <h4>@{{comment.user.username}}</h4>
-                            <br>
-                            <p>{{comment.message}}</p>
-                            <br>
-                            <h4>{{comment.created|timesince}} ago</h4>
+                        <div class="comment" style="background-color: rgb(230,230,230);">
+                            <h4 style="color: rgb(100,100,100);">@{{comment.user.username}}</h4>
+                            <p style="margin: 8px 0;">{{comment.message}}</p>
+                            <h5 style="color: rgb(100,100,100);">{{comment.created|timesince}} ago</h5>
                         </div>
                     {%endfor%}
                 </div>

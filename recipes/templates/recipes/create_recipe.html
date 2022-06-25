@@ -1,25 +1,45 @@
+{% extends 'home.html' %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% block meta %}
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% endblock meta %}
+
+    {% block styles%}
+    <link rel="stylesheet" href="{% static 'styles/create_recipe.css' %}">
+    {% endblock styles %}
+
+    {% block title %}
     <title>Recipe-Expo | Create a Recipe</title>
+    {% endblock title %}
 </head>
 <body>
-    <h1>Create Recipe</h1>
-    <br><br>
-    <form action="" method="post" enctype="multipart/form-data">
-        {%csrf_token%}
-        {{form.media}}
-        {%for field in form%}
-            <div class="">
-                <label for="">{{field.name}}</label>
-                {{field}}
-            </div>
-            <br>
-            {%endfor%}
-        <button type="submit">Create</button>
-    </form>
+    {% block content %}
+    <main class="create_recipe_main">
+        <div class="create_recipe_inner_wrapper">
+            <h2>Write a Recipe</h2>
+            <br><br>
+            <form action="" method="post" enctype="multipart/form-data">
+                {%csrf_token%}
+                {{form.media}}
+                {%for field in form%}
+                    <div class="field_wrapper">
+                        <label for="">{{field.name}} :  </label>
+                        <div class="field">
+                            {{field}}
+                            {{field.help_text}}
+                        </div>
+                    </div>
+                    <br>
+                    {%endfor%}
+                <button type="submit">CREATE</button>
+            </form>
+        </div>
+    </main>
+    {% endblock content %}
 </body>
 </html>

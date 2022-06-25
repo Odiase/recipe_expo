@@ -25,7 +25,8 @@
 
 .sliders .slide .slide-text h2 {
   font-size: 35px;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
+  line-height: 2.5rem;
 }
 
 .sliders .slide .slide-text p {

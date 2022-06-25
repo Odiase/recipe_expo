@@ -23,8 +23,9 @@
     <!-- google font links ends -->
 
     <!-- custom script starts-->
-    {%block script%}
     <script src="{% static 'scripts/home.js'%}" defer></script>
+    {%block script%}
+    
     {%endblock script%}
     <!-- custoim script ends -->
 
@@ -39,11 +40,14 @@
 <body>
     <!-- header starts -->
     <header>
+        <form action="{% url 'search_recipe' %}" id="mobile-search" method="post">
+            {% csrf_token %}
+            <input type="search" name="search_input" id="" placeholder="Search For Recipes And Recipe Categories">
+        </form>
         <h1><a href=" {% url 'home' %} "><i class="fa fa-utensils"></i>Recipe-Expo</a></h1>
 
         <nav class="navbar">
-            <a href=" {% url 'home' %} ">Home</a>
-            <a href="">About</a>
+            <!-- <a href=" {% url 'home' %} ">Home</a> -->
             <a href=" {% url 'create_recipe' %} ">Write A Recipe</a>
             <a href=" {% url 'recipe_book' %} ">Recipe book</a>
             {%if user.is_authenticated%}
@@ -54,18 +58,19 @@
             {%endif%}
         </nav>
 
-        <div class="search-bar">
-            <form action=" {% url 'search_recipe' %} " method="post">
+        
+            <form action=" {% url 'search_recipe' %} " method="post" class="search-bar"> 
                 {%csrf_token%}
-                <input type="search" name="search_input">
+                <input type="search" name="search_input" placeholder="Search For Recipes And Recipe Categories">
                 <button type="submit">
                     <i class="fa fa-search"></i></button>
             </form>
-        </div>
+        
 
         <!-- icons -->
         <div class="icons">
             <h4 onclick="toggle_menu()" id="menu-btn"><i class="fa fa-bars"></i></h4>
+            <h4 onclick="show_mobile_search_bar()"><i class="fa fa-search"></i></h4>
         </div>
     </header>
     <!-- header ends -->
@@ -97,8 +102,8 @@
 
     <!-- popular Recipes starts -->
     <section class="popular-recipes">
-        <small>Recipes</small>
-        <h2>Popular Recipes</h2>
+        <p style="text-align: center;">Recipes</p>
+        <h2>Featured Recipes</h2>
         <div class="recipes-wrapper">
             {%for recipe in recipes%}
             <div class="recipe">
@@ -107,11 +112,9 @@
                 </div>
                 <div class="recipe-info">
                     <h3>{{recipe.category}}</h3>
-                    <h2>{{recipe.recipe_name}}</h2>
-                    <h4><span><i class="fa fa-clock"></i></span>{{recipe.preparation_time}} Mins</h4>
-                    <form action="">
+                    <h3>{{recipe.recipe_name}}</h3>
+                    <h4><span><i class="fa fa-clock"></i> </span>{{recipe.preparation_time}}Mins</h4>
                         <button class="special-btn"><a href=" {{recipe.get_absolute_url}} ">See Recipe</a></button>
-                    </form>
                 </div>
             </div>
             {%endfor%}
@@ -123,7 +126,7 @@
 
     <!-- drinks recipes starts -->
      <section class="popular-recipes">
-        <h2>Drinks</h2>
+        <h2><i class="fa fa-martini-glass"></i> Drinks</h2>
         <div class="recipes-wrapper">
 
             {%for recipe in drinks%}
@@ -133,11 +136,9 @@
                     </div>
                     <div class="recipe-info">
                         <h3>{{recipe.category}}</h3>
-                        <h2>{{recipe.recipe_name}}</h2>
+                        <h3>{{recipe.recipe_name}}</h3>
                         <h4><span><i class="fa fa-clock"></i></span> 10 Mins</h4>
-                        <form action="">
                             <button class="special-btn"><a href=" {{recipe.get_absolute_url}} ">See Recipe</a></button>
-                        </form>
                     </div>
                 </div>
             {%endfor%}
@@ -158,17 +159,37 @@
                     </div>
                     <div class="recipe-info">
                         <h3>{{recipe.category}}</h3>
-                        <h2>{{recipe.recipe_name}}</h2>
+                        <h3>{{recipe.recipe_name}}</h3>
                         <h4><span><i class="fa fa-clock"></i></span> 10 Mins</h4>
-                        <form action="">
                             <button class="special-btn"><a href=" {{recipe.get_absolute_url}} ">See Recipe</a></button>
-                        </form>
                     </div>
                 </div>
             {%endfor%}
         </div>
     </section>
     <!--  pastries recipes ends -->
+
+
+    <!-- healthy and tasty recipes starts -->
+    <section class="popular-recipes">
+        <h2>Healthy And Tasty</h2>
+        <div class="recipes-wrapper">
+            {%for recipe in healthy_and_tasty%}
+                <div class="recipe">
+                    <div class="recipe-img">
+                        <img src="{{recipe.recipe_image.url}}" alt="{{recipe.recipe_name}} recipe image">
+                    </div>
+                    <div class="recipe-info">
+                        <h3>{{recipe.category}}</h3>
+                        <h3>{{recipe.recipe_name}}</h3>
+                        <h4><span><i class="fa fa-clock"></i></span>{{recipe.preparation_time}} Mins</h4>
+                            <button class="special-btn"><a href=" {{recipe.get_absolute_url}} ">See Recipe</a></button>
+                    </div>
+                </div>
+            {%endfor%}
+        </div>
+    </section>
+    <!-- healthy and tasty recipes ends -->
 
 
     <!-- write a recipe section starts -->
@@ -184,32 +205,37 @@
     {%endblock content%}
     <!-- footer section starts -->
     <footer>
-        <div class="footer-category">
-            <h3>Quick Links</h3>
-            <ul>
-                {%if user.is_authenticated%}
-                    <li><a href=" {% url 'logout' %} ">Logout</a></li>
-                {%else%}
+        <div class="footer-inner-wrapper">
+            <div class="footer-category">
+                <h3>Quick Links</h3>
+                <ul>
+                    {% if user.is_authenticated == False %}
                     <li><a href=" {% url 'sign_up' %} ">Sign Up</a></li>
                     <li><a href=" {% url 'login' %} ">Login</a></li>
-                {%endif%}
-                <li><a href="">About</a></li>
-                <li><a href=" {% url 'create_recipe' %} ">Write A Recipe</a></li>
-            </ul>
-        </div>
-
-        <div class="footer-category">
-            <h3>Other Links</h3>
-            <ul>
-                {% if user.is_authenticated %}
-                <li><a href=" {% url 'recipe_book' %} ">My Recipe Book</a></li>
-                {% endif %}
-                <li><a href=" {% url 'search_recipe' %} ">Search</a></li>
-                <li><a href="">Tech Stack</a></li>
-                <li><a href="">APi</a></li>
-            </ul>
+                    {%else%}
+                    <li><a href=" {% url 'logout' %} ">Logout</a></li>
+                    {% endif %}
+                    <li><a href="">About</a></li>
+                    <li><a href=" {% url 'create_recipe' %} ">Write A Recipe</a></li>
+                </ul>
+            </div>
+    
+            <div class="footer-category">
+                <h3>Other Links</h3>
+                <ul>
+                    {% if user.is_authenticated %}
+                    <li><a href=" {% url 'recipe_book' %} ">My Recipe Book</a></li>
+                    {% endif %}
+                    <li><a href=" {% url 'search_recipe' %} ">Search</a></li>
+                    <li><a href="">Tech Stack</a></li>
+                    <li><a href=" {% url 'api' %} ">API</a></li>
+                </ul>
+            </div>
         </div>
     </footer>
+    <div class="made-with-love">
+        <h4>Made With <i class="fa fa-heart"></i> By Odiase Efosa</h4>
+    </div>
     <!-- footer section ends -->
 </body>
 </html>

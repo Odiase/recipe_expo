@@ -19,7 +19,7 @@
     <!-- font awesome link ends -->
 
     {%block title%}
-    <title>Recipe-Expo | Search</title>
+    <title>Recipe-Expo | Search for "{{search_input}}"</title>
     {% endblock title%}
 </head>
 <body>
@@ -35,9 +35,10 @@
         </div>
         <section class="search-result-wrapper">
             {% if search_input %}
-            <h2>Your Search "{{search_input|truncatewords:3}}" Resulted In {{number_of_results}} Results</h2>
-            {%else%}
-            <h2>Search Results</h2>
+            <h3 style="text-align: center;">Your Search "{{search_input|truncatewords:3}}" Returned In {{number_of_results}} Results</h3>
+            {%elif empty_search%}
+            <h3 style="text-align: center;">You Didn't Enter Word In The Search Bar <br> Try Entering A Word And Search Again
+            </h3>
             {% endif %}
             <br>
             <div class="recipes-wrapper">
@@ -51,6 +52,19 @@
                             <h2> {{recipe.recipe_name}} </h2>
                             <h4><i class="fa fa-clock"></i> 10 Mins</h4>
                                 <button><a href=" {{recipe.get_absolute_url}} ">See Recipe</a></button>
+                        </div>
+                    </div>
+                {% endfor %}
+                <br><br>
+                {% for recipe in api_recipes %}
+                    <div class="recipe">
+                        <div class="recipe-img">
+                            <img class="recipe_img" src="{{base_uri}}{{recipe.image}}" alt="">
+                        </div>
+                        <div class="recipe-info">
+                            <h2> {{recipe.title}}</h2>
+                            <h4><i class="fa fa-clock"></i> {{recipe.readyInMinutes}} Mins</h4>
+                                <button><a href=" {{recipe.sourceUrl}} " target="blank">See Recipe</a></button>
                         </div>
                     </div>
                 {% endfor %}
