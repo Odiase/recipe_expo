@@ -4,7 +4,9 @@
 $red:rgb(160, 10, 10);
 $yellow:rgb(183, 183, 1);
 
-
+input[type = 'search']::placeholder{
+  text-transform: capitalize;
+}
 
 *{
     margin: 0;padding: 0;
@@ -20,6 +22,13 @@ $yellow:rgb(183, 183, 1);
 
 html{
   font-size: 80%;
+}
+::-webkit-scrollbar{
+  width: 1rem;
+}
+::-webkit-scrollbar-thumb{
+  width:1rem;
+  background-color: #a00a0a;
 }
 
 .special-btn{
@@ -82,7 +91,7 @@ header {
       padding: 8px 12px;
       border: 2px solid #a00a0a;
       font-weight: bolder;
-      font-size: 1.4rem;
+      font-size: 1rem;
     }
   }
   
@@ -148,9 +157,10 @@ header {
   .search-bar input {
     padding: 5px 7px;
     border: 2px solid #a00a0a;
+    border-radius: 10epx;
     width: 100%;
     font-weight: bolder;
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
   
   .search-bar button {
@@ -213,10 +223,7 @@ header {
 
   
   
-  
-  
-  
-  
+
 footer{
     width: 100%;
     background: $red;

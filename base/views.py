@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
-from recipes.models import Recipe
+from recipes.models import Recipe,ApiRecipe
 # from .forms import UserForm
 
 # Create your views here.
@@ -16,14 +16,9 @@ def home(request):
     pastries = Recipe.objects.filter(category__icontains = "pastries")[0:3]
     healthy_and_tasty = Recipe.objects.filter(category__icontains = "healthy")[0:3]
 
-    random_category_choices = [popular_recipes, drinks, pastries, healthy_and_tasty]
-
-    featured_recipes = []
-    for i in range(4):
-        category = random.choice(random_category_choices)
-        featured_recipes.append(random.choice(category))
-
-
+    # recipes to be displayed on home page
+    featured_recipes = ApiRecipe.objects.all()[0:4]
+    
     context = {
         "recipes":popular_recipes,
         "drinks":drinks,

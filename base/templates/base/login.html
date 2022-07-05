@@ -20,25 +20,24 @@
     {%block content%}
     <div class="login-container">
         <h1>Login</h1>
-        <br>
         {%for message in messages%}
-        <li style="text-align:center; color: red; list-style-type: disc;">{{message}}</li>
+        <li style="text-align:center; color: rgb(199, 14, 14); list-style-type: disc;">{{message}}</li>
         {%endfor%}
         <div class="form-wrapper">
             <form action="" method="post">
                 {%csrf_token%}
                 <div class="field">
                     <label for="username">Username:</label>
-                    <input type="text" name="username" id="username">
+                    <input type="text" name="username" id="username" required>
                 </div>
                 <div class="field">
                     <label for="password">Password:</label>
-                    <input type="password" name="password" id="password">
+                    <input type="password" name="password" id="password" required>
                 </div>
                 <input type="submit" value="SUBMIT">
             </form>
             <div class="other-link">
-                <h4>Dont Have An Account? <span><a href="{% url 'sign_up' %}">SIGN UP</a></span></h4>
+                <h4>Dont Have An Account? <span><a href="{% url 'sign_up' %}">&nbsp; SIGN UP</a></span></h4>
             </div>
         </div>
     </div>

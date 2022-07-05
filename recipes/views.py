@@ -3,10 +3,11 @@ import json
 
 from django.shortcuts import render,redirect
 from django.db.models import Q
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.http import Http404, HttpResponseForbidden, HttpResponseNotFound
+from django.http import Http404, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotFound
 
-from .models import Recipe, Comment, RecipeBook, Like
+from .models import Recipe, Comment, RecipeBook, Like, ApiRecipe
 from .forms import RecipeForm
 
 # Create your views here.
@@ -31,7 +32,8 @@ def search_recipe(request):
 
         # api recipes search
         try:
-            response = requests.get(f"https://api.spoonacular.com/recipes/search/?apiKey=e2f87062025142ed9320f04299f79ed4&number=15&query={search_input}")
+            api_key = settings.API_KEY
+            response = requests.get(f"https://api.spoonacular.com/recipes/search/?apiKey={api_key}&number=15&query={search_input}")
 
             api_recipe_data = json.loads(response.text) # getting the recipe_results from the response in python dictionary format
 
@@ -125,7 +127,8 @@ def update_recipe(request,slug,id):
         recipe = Recipe.objects.get(id = id)
         form = RecipeForm(instance=recipe)
     except:
-        return HttpResponseNotFound()
+        return Http404()
+
 
     # verifying that the request user is the writer of this recipe
     if recipe.user != request.user:
@@ -149,9 +152,11 @@ def update_recipe(request,slug,id):
 def recipe_book(request):
     recipe_book,created = RecipeBook.objects.get_or_create(user = request.user)
     book_recipes = recipe_book.recipes.all()
+    api_recipes = recipe_book.api_recipes.all()
     context = {
         'recipe_book': recipe_book,
         'book_recipes': book_recipes,
+        'api_recipes':api_recipes
     }
     return render(request, "recipes/recipe-book.html", context)
 
@@ -160,13 +165,34 @@ def recipe_book(request):
 def add_to_recipe_book(request):
     if request.method == "POST":
         id = request.POST['recipe_id']
+        if request.POST['recipe_url']:
+            url = request.POST['recipe_url']
+            image = request.POST['recipe_image']
+            name = request.POST['recipe_name']
+            time = request.POST['recipe_time']
+            link = request.POST['link']
+        else:
+            url = ""
+            image = ""
+
+        # try to get the recipe from the created Recipes in The Database
+        # if it doesnt exist, try create an APiRecipe Object Instance with the submitted data and save.
         try:
             recipe = Recipe.objects.get(id = id)
             recipe_book,created = RecipeBook.objects.get_or_create(user = request.user)
+            recipe_book.recipes.add(recipe)
         except:
-            return Http404()  
-        recipe_book.recipes.add(recipe)
+            #create an api recipe instance
+            api_recipe,created = ApiRecipe.objects.get_or_create(id = id, recipe_url = url, image_url = image, name = name, time_to_prepare = time, recipe_link = link)
+            if RecipeBook.objects.filter(user = request.user, api_recipes = api_recipe).exists():
+                return redirect('recipe_book')
+            recipe_book,created = RecipeBook.objects.get_or_create(user = request.user)
+            recipe_book.api_recipes.add(api_recipe)
         return redirect('recipe_book')
+    else:
+        return redirect("search_recipe")
+
+        
         
 
 def remove_recipe(request):
@@ -175,9 +201,12 @@ def remove_recipe(request):
         try:
             recipe = Recipe.objects.get(id = id)
             recipe_book,created = RecipeBook.objects.get_or_create(user = request.user)
+            recipe_book.recipes.remove(recipe)
         except:
-            return Http404()  
-        recipe_book.recipes.remove(recipe)
+            api_recipe = ApiRecipe.objects.get(id = id)
+            print(api_recipe)
+            recipe_book,created = RecipeBook.objects.get_or_create(user = request.user)
+            recipe_book.api_recipes.remove(api_recipe)
         return redirect('recipe_book')
     
 

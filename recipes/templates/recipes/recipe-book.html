@@ -75,6 +75,28 @@
             <h3 style="text-align: center; display: inline-block;">You Have Saved No Recipe in Your Book</h3>
             <p></p>
             {%endif%}
+
+            {% if api_recipes %}
+                {%for recipe in api_recipes%}
+                    <div class="recipe">
+                        <div class="recipe-img">
+                            <img src="{{recipe.image_url}}" alt="">
+                        </div>
+                        <div class="recipe-info">
+                            <br>
+                            <h2>{{recipe.name}}</h2>
+                            <h4><i class="fa fa-clock"></i> {{recipe.time_to_prepare}} mins</h4>
+                            <form action="" class="remove-form">
+                                <input type="hidden" value="{{recipe.name}}" id="recipe_name">
+                                <input type="hidden" value="{{recipe.id}}" id="recipe_id">
+                                <button class="remove-btn" type="submit" >Remove Recipe</button>
+                                <button class="remove-btn special-btn" type="submit" style="margin-left: 10px;" > <a href=" {{recipe.recipe_link}} " target="blank">See Recipe</a> </button>
+                            </form>
+                        </div>
+                    </div>
+                {%endfor%}
+            {%else%}
+            {%endif%}
         </div>
     </main>
     {%endblock content%}

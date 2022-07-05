@@ -80,9 +80,16 @@ class Recipe(models.Model):
 
 
 class ApiRecipe(models.Model):
-    id = models.CharField(max_length=200, primary_key=True)
+    id = models.CharField(max_length=200, primary_key=True, unique = True)
     recipe_url = models.URLField()
+    image_url = models.URLField(blank=True, null = True)
+    name = models.CharField(max_length=200, blank=True, null = True)
+    time_to_prepare = models.CharField(max_length=10, blank=True, null = True)
+    recipe_link = models.URLField(blank=True, null = True)
     type = "api_recipe"
+
+    def __str__(self):
+        return f"{self.name} has an id of {self.id}"
 
 
 class RecipeBook(models.Model):

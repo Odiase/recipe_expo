@@ -35,7 +35,7 @@
         </div>
         <section class="search-result-wrapper">
             {% if search_input %}
-            <h3 style="text-align: center;">Your Search "{{search_input|truncatewords:3}}" Returned In {{number_of_results}} Results</h3>
+            <h3 style="text-align: center;">Your Search "{{search_input|truncatewords:3}}" Returned {{number_of_results}} Results</h3>
             {%elif empty_search%}
             <h3 style="text-align: center;">You Didn't Enter Word In The Search Bar <br> Try Entering A Word And Search Again
             </h3>
@@ -62,9 +62,20 @@
                             <img class="recipe_img" src="{{base_uri}}{{recipe.image}}" alt="">
                         </div>
                         <div class="recipe-info">
+                            <br>
                             <h2> {{recipe.title}}</h2>
                             <h4><i class="fa fa-clock"></i> {{recipe.readyInMinutes}} Mins</h4>
                                 <button><a href=" {{recipe.sourceUrl}} " target="blank">See Recipe</a></button>
+                                <form action=" {% url 'add_to_recipe_book' %} " method="post" style="display: inline-block;">
+                                    {%csrf_token%}
+                                    <input type="hidden" value="{{recipe.id}}" name = "recipe_id">
+                                    <input type="hidden" name="recipe_url" value=" {{recipe.sourceUrl}} ">
+                                    <input type="hidden" name="recipe_image" value = "{{base_uri}}{{recipe.image}}">
+                                    <input type="hidden" name="recipe_name" value = "{{recipe.title}}" >
+                                    <input type="hidden" name="recipe_time" value = "{{recipe.readyInMinutes}}">
+                                    <input type="hidden" name="link" value ="{{recipe.sourceUrl}}">
+                                    <button>Add To Recipe Book</button>
+                                </form>
                         </div>
                     </div>
                 {% endfor %}
