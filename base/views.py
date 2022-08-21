@@ -47,7 +47,7 @@ def sign_up(request):
                 return redirect("sign_up")
             else:     
                 user = User.objects.create_user(username = username, password = password1)
-                user.save()
+                messages.success(request,"Account Created Successfully!")
                 login(request,user)
                 return redirect('home')
         else:
@@ -67,7 +67,12 @@ def Login(request):
         user = authenticate(username = username, password = password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+             ###  CHECKING THE URL TO SEE IF THIS REDIRECTS THE USER TO ANOTHER PAGE
+            if request.GET.get("next") != None:
+                return redirect(request.GET.get("next"))
+            else:
+                messages.success(request,"Logged In Successfully")
+                return redirect('home')
         else:
             messages.error(request,"Invalid Login Credentials")
 

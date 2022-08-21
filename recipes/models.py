@@ -6,6 +6,7 @@ from django.urls import reverse
 from ckeditor.fields import RichTextField
 from django_resized import ResizedImageField
 from embed_video.fields import EmbedVideoField
+from embed_video.backends import *
 
 # Create your models here
 
@@ -63,7 +64,8 @@ class Recipe(models.Model):
             return False
 
     def num_of_likes(self):
-        likes = self.recipe_likes.all().count()
+        likes = self.recipe_likes
+        likes = likes.count()
         return likes
     
     # does a user already like this recipe ??

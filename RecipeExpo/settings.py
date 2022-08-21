@@ -17,12 +17,8 @@ import environ
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # initialize environment variables
-env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, False)
-)
+env = environ.Env()
 # reading .env file
-
 environ.Env.read_env()
 
 
@@ -140,10 +136,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = Path(BASE_DIR)/'staticfiles'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    Path(BASE_DIR)/'static'
+    Path(STATIC_ROOT)/'static'
 ]
 
 MEDIA_URL = '/media/'
@@ -157,6 +153,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 CORS_ALLOW_ALL_ORIGINS = env.bool('CORS_ALLOW_ALL_ORIGINS')
+
+# REST FRAMEWORK
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES':[
+        'rest_framework.authentication.BasicAuthentication'
+    ]
+}
 
 #spoonacular API KEY
 API_KEY = env.str('API_KEY')

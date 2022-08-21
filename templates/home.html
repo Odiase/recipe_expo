@@ -38,6 +38,11 @@
     {%endblock title%}
 </head>
 <body>
+    <div class="messages">
+        {% for message in messages %}
+        <h3>{{message}}</h3>
+        {% endfor %}
+    </div>
     <!-- header starts -->
     <header>
         <form action="{% url 'search_recipe' %}" id="mobile-search" method="post">

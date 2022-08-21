@@ -34,13 +34,9 @@ def search_recipe(request):
         try:
             api_key = settings.API_KEY
             response = requests.get(f"https://api.spoonacular.com/recipes/search/?apiKey={api_key}&number=15&query={search_input}")
-
             api_recipe_data = json.loads(response.text) # getting the recipe_results from the response in python dictionary format
-
             api_recipes = api_recipe_data['results']
-
             base_uri = api_recipe_data['baseUri'] # needed to get the recipe images in the image src attribute on the frontend
-
             number_of_recipes_from_api = len(api_recipe_data['results'])
         except:
             api_recipe_data = ""
@@ -78,7 +74,7 @@ def single_recipe(request, slug, id):
     added_to_recipe_book = False
     liked_recipe = False
 
-    # if the user is authentiucated, i check if the authenticated user has this recipe in his/her recipe book
+    # if the user is authenticated, i check if the authenticated user has this recipe in his/her recipe book
     if request.user.is_authenticated:
         added_to_recipe_book = recipe.added_to_recipe_book(request.user)
         liked_recipe = recipe.already_liked_recipe(request.user)
@@ -190,10 +186,7 @@ def add_to_recipe_book(request):
             recipe_book.api_recipes.add(api_recipe)
         return redirect('recipe_book')
     else:
-        return redirect("search_recipe")
-
-        
-        
+        return redirect("search_recipe")       
 
 def remove_recipe(request):
     if request.method == "POST":
@@ -210,6 +203,7 @@ def remove_recipe(request):
         return redirect('recipe_book')
     
 
+@login_required(login_url="login")
 def like_recipe(request,id):
     if request.method == "POST":
         try:
@@ -220,3 +214,5 @@ def like_recipe(request,id):
             return HttpResponseForbidden()
         new_like = Like.objects.create(user = request.user, recipe = recipe)
         return redirect('single_recipe', recipe.slug, id)
+    else:
+        return redirect("home")

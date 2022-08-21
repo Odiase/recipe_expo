@@ -1,0 +1,230 @@
+.messages {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999999999;
+  -webkit-animation: display_message 3s;
+          animation: display_message 3s;
+  opacity: 0;
+}
+
+.messages h3 {
+  padding: 20px;
+  text-align: center;
+  background-color: #086b08;
+  color: white;
+}
+
+.sliders {
+  width: 100%;
+  height: calc(100vh - 50px);
+  overflow: hidden;
+}
+
+.sliders .slide {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.sliders .slide .slide-text {
+  z-index: 2;
+  width: 90%;
+  margin: auto;
+  color: white;
+}
+
+.sliders .slide .slide-text h2 {
+  font-size: 35px;
+  margin-bottom: 15px;
+  line-height: 2.5rem;
+}
+
+.sliders .slide .slide-text p {
+  font-size: 1.2rem;
+}
+
+.sliders .slide .slide-text button {
+  padding: 15px 35px;
+  margin-top: 10px;
+  border: none;
+  font-weight: bolder;
+  background-color: #b7b701;
+  -webkit-transition: .3s;
+  transition: .3s;
+  font-size: 15px;
+}
+
+.sliders .slide .slide-text button a {
+  color: #a00a0a;
+}
+
+.sliders .slide .slide-text button:hover {
+  background-color: #a00a0a;
+}
+
+.sliders .slide .slide-text button:hover a {
+  color: white;
+}
+
+.sliders .slide .slide-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.sliders .slide .slide-img img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.sliders .slide .layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 800px) {
+  .sliders .slide .slide-text h2 {
+    font-size: 45px;
+    margin-bottom: 22px;
+  }
+}
+
+.popular-recipes {
+  width: 100%;
+  padding: 25px 15px;
+  margin: 30px 0;
+}
+
+.popular-recipes > h2 {
+  font-size: 1.8rem;
+  text-align: center;
+  color: #a00a0a;
+}
+
+.popular-recipes small {
+  display: block;
+  font-weight: bolder;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.write-a-recipe {
+  width: 100%;
+  height: 70vh;
+  position: relative;
+  margin-top: 60px;
+}
+
+.write-a-recipe img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+}
+
+.write-a-recipe .write-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+}
+
+.write-a-recipe .write-layer h2 {
+  font-size: 2rem;
+}
+
+.write-a-recipe button {
+  padding: 15px 35px;
+  margin-top: 20px;
+  border: none;
+  font-weight: bolder;
+  background-color: #b7b701;
+  -webkit-transition: .3s;
+  transition: .3s;
+  font-size: 15px;
+}
+
+.write-a-recipe button a {
+  color: #a00a0a;
+}
+
+.write-a-recipe button:hover {
+  background-color: #a00a0a;
+}
+
+.write-a-recipe button:hover a {
+  color: white;
+}
+
+@-webkit-keyframes display_message {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: .5;
+  }
+  50% {
+    opacity: 1;
+  }
+  75% {
+    opacity: .5;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
+@keyframes display_message {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: .5;
+  }
+  50% {
+    opacity: 1;
+  }
+  75% {
+    opacity: .5;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+/*# sourceMappingURL=home.css.map */
