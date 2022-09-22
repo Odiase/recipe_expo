@@ -12,9 +12,9 @@ from recipes.models import Recipe,ApiRecipe
 def home(request):
     recipes = Recipe.objects.all()
     popular_recipes = recipes[0:3]
-    drinks = Recipe.objects.filter(category__icontains = "drinks")[0:3]
-    pastries = Recipe.objects.filter(category__icontains = "pastries")[0:3]
-    healthy_and_tasty = Recipe.objects.filter(category__icontains = "healthy")[0:3]
+    drinks = recipes.filter(category__icontains = "drinks")[0:3]
+    pastries = recipes.filter(category__icontains = "pastries")[0:3]
+    healthy_and_tasty = recipes.filter(category__icontains = "healthy")[0:3]
 
     # recipes to be displayed on home page
     featured_recipes = ApiRecipe.objects.all()[0:4]

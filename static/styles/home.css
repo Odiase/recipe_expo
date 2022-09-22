@@ -1,4 +1,5 @@
 .messages {
+  display: none;
   position: absolute;
   top: 0;
   left: 0;
@@ -212,6 +213,7 @@
 @keyframes display_message {
   0% {
     opacity: 0;
+    display: block;
   }
   25% {
     opacity: .5;
