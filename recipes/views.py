@@ -1,63 +1,40 @@
+#stlib imports
 import requests
 import json
 
+# third packages imports
 from django.shortcuts import render,redirect
 from django.db.models import Q
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotFound
 
+# local imports
 from .models import Recipe, Comment, RecipeBook, Like, ApiRecipe
 from .forms import RecipeForm
+from .get_recipes import api_recipe_search
 
 # Create your views here.
-
 def search_recipe(request):
 
     if request.method == "POST":
         search_input = request.POST['search_input']
-
-        if len(search_input) == 0:
-            return redirect('search_recipe')       
-        elif len(search_input) == 1:
-            search_results = Recipe.objects.filter(
-            Q(recipe_name__startswith = search_input) |
-            Q(category__startswith = search_input)
-        )
-        else:
-            search_results = Recipe.objects.filter(
+    
+        search_results = Recipe.objects.filter(
             Q(recipe_name__icontains = search_input) |
             Q(category__icontains = search_input)
         )
 
         # api recipes search
-        try:
-            api_key = settings.API_KEY
-            response = requests.get(f"https://api.spoonacular.com/recipes/search/?apiKey={api_key}&number=15&query={search_input}")
-            api_recipe_data = json.loads(response.text) # getting the recipe_results from the response in python dictionary format
-            api_recipes = api_recipe_data['results']
-            base_uri = api_recipe_data['baseUri'] # needed to get the recipe images in the image src attribute on the frontend
-            number_of_recipes_from_api = len(api_recipe_data['results'])
-        except:
-            api_recipe_data = ""
-            base_uri = ""
-            number_of_recipes_from_api = 0
-            api_recipes = ""
-    else:
-        search_results = ""
-        search_input = ""
-        empty_search = False
-
-        #api variables
-        api_recipe_data = ""
-        base_uri = ""
-        number_of_recipes_from_api = 0
-        api_recipes = ""
+        api_results = api_recipe_search(search_input)
+        number_of_recipes_from_api = api_results['num_of_recipes_from_api']
+        api_recipes = api_results['api_recipes']
+        base_uri = api_results['base_uri']
 
     context = {
         'search_results':search_results,
         'search_input':search_input,
-        'number_of_results':len(search_results) + number_of_recipes_from_api,
+        'number_of_results':search_results.count() + number_of_recipes_from_api,
         "api_recipes": api_recipes,
         "base_uri":base_uri,
     }
@@ -70,21 +47,21 @@ def single_recipe(request, slug, id):
     except:
         return HttpResponseNotFound()
     total_time = recipe.preparation_time + recipe.cooking_time
-    recipe_comments = recipe.get_recent_comments()[0:5]
+    recipe_comments = recipe.get_recent_comments()
     added_to_recipe_book = False
     liked_recipe = False
 
-    # if the user is authenticated, i check if the authenticated user has this recipe in his/her recipe book
+    # if the user is authenticated, check if the authenticated user has this recipe in his/her recipe book
     if request.user.is_authenticated:
         added_to_recipe_book = recipe.added_to_recipe_book(request.user)
         liked_recipe = recipe.already_liked_recipe(request.user)
         
-    # comment functionality
+    # comment feature
     if request.method == "POST":
         message = request.POST['comment_message']
-        new_comment = Comment.objects.create(user = request.user,recipe = recipe, message = message)
+        new_comment = Comment.objects.create(user=request.user, recipe=recipe, message=message)
         new_comment.save()
-        return redirect("single_recipe",slug, id)
+        return redirect("single_recipe", slug, id)
     
     context = {
         'recipe':recipe,
@@ -111,20 +88,19 @@ def create_recipe(request):
             recipe_book,created = RecipeBook.objects.get_or_create(user = request.user)
             recipe_book.recipes.add(new_recipe)
             return redirect('single_recipe',new_recipe.slug, new_recipe.id)
-    context  = {
-        'form':form
+    context = {
+        'form' : form
     }
     return render(request,"recipes/create_recipe.html", context)
 
 
 @login_required(login_url="login")
-def update_recipe(request,slug,id):
+def update_recipe(request,id):
     try:
         recipe = Recipe.objects.get(id = id)
         form = RecipeForm(instance=recipe)
     except:
         return Http404()
-
 
     # verifying that the request user is the writer of this recipe
     if recipe.user != request.user:
@@ -161,7 +137,10 @@ def recipe_book(request):
 def add_to_recipe_book(request):
     if request.method == "POST":
         id = request.POST['recipe_id']
-        if request.POST['recipe_url']:
+        recipe_book,created = RecipeBook.objects.get_or_create(user=request.user)
+
+        #checking if this recipe is gotten from the spoonacular api
+        if request.POST.get('recipe_url'):
             url = request.POST['recipe_url']
             image = request.POST['recipe_image']
             name = request.POST['recipe_name']
@@ -172,33 +151,30 @@ def add_to_recipe_book(request):
             image = ""
 
         # try to get the recipe from the created Recipes in The Database
-        # if it doesnt exist, try create an APiRecipe Object Instance with the submitted data and save.
+        # if it doesnt exist, create an APiRecipe Object Instance with the submitted data and save.
         try:
             recipe = Recipe.objects.get(id = id)
-            recipe_book,created = RecipeBook.objects.get_or_create(user = request.user)
             recipe_book.recipes.add(recipe)
         except:
             #create an api recipe instance
-            api_recipe,created = ApiRecipe.objects.get_or_create(id = id, recipe_url = url, image_url = image, name = name, time_to_prepare = time, recipe_link = link)
-            if RecipeBook.objects.filter(user = request.user, api_recipes = api_recipe).exists():
+            api_recipe,created = ApiRecipe.objects.get_or_create(id=id, recipe_url=url, image_url=image, name=name, time_to_prepare=time, recipe_link=link)
+
+            if created or RecipeBook.objects.filter(user=request.user, api_recipes=api_recipe).exists() == False:
+                recipe_book.api_recipes.add(api_recipe)
+            else:
                 return redirect('recipe_book')
-            recipe_book,created = RecipeBook.objects.get_or_create(user = request.user)
-            recipe_book.api_recipes.add(api_recipe)
         return redirect('recipe_book')
-    else:
-        return redirect("search_recipe")       
+    return redirect("search_recipe")       
 
 def remove_recipe(request):
     if request.method == "POST":
         id = request.POST['recipe_id']
+        recipe_book,created = RecipeBook.objects.get_or_create(user=request.user)
         try:
-            recipe = Recipe.objects.get(id = id)
-            recipe_book,created = RecipeBook.objects.get_or_create(user = request.user)
+            recipe = Recipe.objects.get(id=id)
             recipe_book.recipes.remove(recipe)
         except:
-            api_recipe = ApiRecipe.objects.get(id = id)
-            print(api_recipe)
-            recipe_book,created = RecipeBook.objects.get_or_create(user = request.user)
+            api_recipe = ApiRecipe.objects.get(id=id)
             recipe_book.api_recipes.remove(api_recipe)
         return redirect('recipe_book')
     
@@ -210,8 +186,10 @@ def like_recipe(request,id):
             recipe = Recipe.objects.get(id = id)
         except:
             return Http404()
+
         if recipe.already_liked_recipe(request.user): # checking if the recipe is already liked by the request user
             return HttpResponseForbidden()
+
         new_like = Like.objects.create(user = request.user, recipe = recipe)
         return redirect('single_recipe', recipe.slug, id)
     else:

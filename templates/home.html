@@ -45,14 +45,18 @@
     </div>
     <!-- header starts -->
     <header>
+
+        <!-- Mobile Search Bar starts -->
         <form action="{% url 'search_recipe' %}" id="mobile-search" method="post">
             {% csrf_token %}
             {% if user.is_authenticated %}
-            <input type="search" name="search_input" id="" placeholder="Hi {{user.username}}, What Delicacy Do You Wanna prepare?...">
+            <input type="search" name="search_input" id="" placeholder="Hi {{user.username}}, What Delicacy Do You Want To Prepare?..." required>
             {% else %}
-            <input type="search" name="search_input" id="" placeholder="What Delicacy Do You Wanna prepare?...">    
+            <input type="search" name="search_input" id="" placeholder="What Delicacy Do You Wanna prepare?..." required>    
             {% endif %}
         </form>
+        <!-- Mobile Search Bar Ends -->
+
         <h1><a href=" {% url 'home' %} "><i class="fa fa-utensils"></i>Recipe-Expo</a></h1>
 
         <nav class="navbar">
@@ -66,18 +70,18 @@
             {%endif%}
         </nav>
 
-        
+               <!-- Desktop View Search Bar Starts -->
             <form action=" {% url 'search_recipe' %} " method="post" class="search-bar"> 
                 {%csrf_token%}
                 {%if user.is_authenticated%}
-                <input type="search" name="search_input" placeholder="Hi {{user.username}}, What Delicacy Do You Wanna prepare?... ">
+                <input type="search" name="search_input" placeholder="Hi {{user.username}}, What Delicacy Do You Want To Prepare?... " required>
                 {%else%}
-                <input type="search" name="search_input" placeholder="What Delicacy Do You Wanna prepare?... ">
+                <input type="search" name="search_input" placeholder="What Delicacy Do You Wanna prepare?... " required>
                 {%endif%}
                 <button type="submit">
                     <i class="fa fa-search"></i></button>
             </form>
-        
+            <!-- Desktop View Search Bar Starts -->
 
         <!-- icons -->
         <div class="icons">

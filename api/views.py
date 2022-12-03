@@ -15,11 +15,6 @@ from .serializers import RecipeSerializer
 @authentication_classes([BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def get_routes(request): 
-    # routes = [
-    #     'GET /api/',
-    #     'GET /api/recipe/:< recipe_id >/',
-    #     'GET /api/recipe/search/<: search_word>/'
-    # ]
     context = {
         "GET":'/api/',
         "GET":'/api/recipe/:< recipe_id >/',

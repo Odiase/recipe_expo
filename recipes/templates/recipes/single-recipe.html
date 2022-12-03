@@ -28,7 +28,7 @@
                 <h4 class=" faint">{{recipe.recipe_info}}</h4>
                 <button>{{recipe.category}}</button>
                 {%if recipe.user == user%}
-                <button><a href=" {%url 'update_recipe' recipe.slug recipe.id %} " style="color: white;">Update Recipe</a></button>
+                <button><a href=" {%url 'update_recipe' recipe.id %} " style="color: white;">Update Recipe</a></button>
                 {%else%}
                     {%if in_recipe_book%}
                         <form action=" {% url 'remove_recipe' %} " method="post">

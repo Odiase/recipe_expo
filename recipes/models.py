@@ -11,6 +11,8 @@ from embed_video.backends import *
 # Create your models here
 
 class Recipe(models.Model):
+    '''Recipe Table Schema'''
+
     recipe_categories = (
         ('Dessert','Dessert'),
         ('Drinks','Drinks'),
@@ -48,40 +50,45 @@ class Recipe(models.Model):
     def __str__(self):
         return self.recipe_name
     
-    # gets the link to a single recipe view
     def get_absolute_url(self):
-        return reverse('single_recipe',args = [str(self.slug),str(self.id)])
+        '''returns the link to a single recipe view'''
+        return reverse('single_recipe', args=[str(self.slug),str(self.id)])
 
     def get_recent_comments(self):
-        comments = self.comments.all()[0:10]
+        '''Returns 5 comments from a recipe'''
+        comments = self.comments.all()[0:5]
         return comments
     
-    # checking if the current recipe instance is added to a user's recipe book
     def added_to_recipe_book(self,user):
-        if RecipeBook.objects.filter(user = user, recipes = self).exists():
+        '''checking if the current recipe instance is added to a user's recipe book'''
+        if RecipeBook.objects.filter(user=user, recipes=self).exists():
             return True
         else:
             return False
 
     def num_of_likes(self):
+        '''Returns Number Of Likes On A Recipe'''
+
         likes = self.recipe_likes
         likes = likes.count()
         return likes
     
-    # does a user already like this recipe ??
     def already_liked_recipe(self,user):
+        '''Checks if a recipe has been liked by a user'''
+
         if Like.objects.filter(user = user, recipe = self).exists():
             return True
         else:
             return False
     
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.recipe_name)
+        self.slug = slugify(self.recipe_name)
         return super(Recipe,self).save(*args, **kwargs)
 
 
 class ApiRecipe(models.Model):
+    '''ApiRecipe Table Schema'''
+
     id = models.CharField(max_length=200, primary_key=True, unique = True)
     recipe_url = models.URLField()
     image_url = models.URLField(blank=True, null = True)
@@ -95,6 +102,8 @@ class ApiRecipe(models.Model):
 
 
 class RecipeBook(models.Model):
+    '''RecipeBook Table Schema'''
+
     recipes = models.ManyToManyField(Recipe)
     api_recipes = models.ManyToManyField(ApiRecipe)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="my_recipe_book")
@@ -104,6 +113,8 @@ class RecipeBook(models.Model):
 
 
 class Comment(models.Model):
+    '''Comment Table Schema'''
+
     user = models.ForeignKey(User, on_delete = models.CASCADE, related_name="my_comments")
     recipe = models.ForeignKey('Recipe', on_delete = models.CASCADE, related_name="comments")
     message = models.CharField(max_length = 200,help_text="Write A Comment On This Recipe")
@@ -117,6 +128,8 @@ class Comment(models.Model):
 
 
 class Like(models.Model):
+    '''Like Table Schema'''
+    
     user = models.ForeignKey(User, on_delete = models.SET_NULL, null = True)
     recipe = models.ForeignKey('Recipe', on_delete=models.CASCADE, related_name="recipe_likes")
 

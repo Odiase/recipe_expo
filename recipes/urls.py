@@ -1,5 +1,14 @@
 from django.urls import path
-from .views import single_recipe, create_recipe, update_recipe, recipe_book, add_to_recipe_book, remove_recipe, like_recipe, search_recipe
+from .views import (
+    single_recipe,
+    create_recipe,
+    update_recipe,
+    recipe_book,
+    add_to_recipe_book,
+    remove_recipe,
+    like_recipe,
+    search_recipe
+)
 
 urlpatterns = [
     path("write_a_recipe", create_recipe, name = "create_recipe"),
@@ -11,6 +20,6 @@ urlpatterns = [
 
     path('like_recipe/<str:id>/',like_recipe, name = "like_recipe"),
 
-    path("update/<str:slug>/<str:id>/", update_recipe, name = "update_recipe"),
+    path("update/<str:id>/", update_recipe, name = "update_recipe"),
     path("<str:slug>/<str:id>/", single_recipe, name = "single_recipe"),
 ]

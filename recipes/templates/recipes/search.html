@@ -29,13 +29,13 @@
         <div class="search-header">
             <form action="" method="post">
                 {%csrf_token%}
-                <input type="search" name="search_input" id="" placeholder="Find Something Else">
+                <input type="search" name="search_input" id="" placeholder="Find Something Else" required>
                 <button type="submit">SEARCH</button>
             </form>
         </div>
         <section class="search-result-wrapper">
             {% if search_input %}
-            <h3 style="text-align: center;">Your Search "{{search_input|truncatewords:3}}" Returned {{number_of_results}} Results</h3>
+            <h3 style="text-align: center;">Your Search "{{search_input|truncatewords:3}}" Returned {{number_of_results}} Result(s)</h3>
             {%elif empty_search%}
             <h3 style="text-align: center;">You Didn't Enter Word In The Search Bar <br> Try Entering A Word And Search Again
             </h3>
@@ -74,7 +74,7 @@
                                     <input type="hidden" name="recipe_name" value = "{{recipe.title}}" >
                                     <input type="hidden" name="recipe_time" value = "{{recipe.readyInMinutes}}">
                                     <input type="hidden" name="link" value ="{{recipe.sourceUrl}}">
-                                    <button>Add To Recipe Book</button>
+                                    <button type="submit">Add To Recipe Book</button>
                                 </form>
                         </div>
                     </div>
