@@ -1,20 +1,23 @@
+#stlib imports
 import random
 
+# third packages imports
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
+# local library imports
 from recipes.models import Recipe,ApiRecipe
-# from .forms import UserForm
+
 
 # Create your views here.
 def home(request):
-    recipes = Recipe.objects.all()
-    popular_recipes = recipes[0:3]
-    drinks = recipes.filter(category__icontains = "drinks")[0:3]
-    pastries = recipes.filter(category__icontains = "pastries")[0:3]
-    healthy_and_tasty = recipes.filter(category__icontains = "healthy")[0:3]
+    recipes = Recipe.objects
+    popular_recipes = recipes.all().order_by('-created')[0:3]
+    drinks = recipes.filter(category__icontains = "drinks").order_by('-created')[0:3]#
+    pastries = recipes.filter(category__icontains = "pastries").order_by('-created')[0:3]
+    healthy_and_tasty = recipes.filter(category__icontains = "healthy").order_by('-created')[0:3]
 
     # recipes to be displayed on home page
     featured_recipes = ApiRecipe.objects.all()[0:4]
