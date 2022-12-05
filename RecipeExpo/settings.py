@@ -145,17 +145,33 @@ USE_L10N = True
 USE_TZ = True
 
 
+### AWS S3 SETTING
+
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = 'recipeexpo'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_DEFAULT_ACL = None
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_HEADERS = {
+    'Access-Control-Allow-Origin' : '*',
+}
+AWS_LOCATION = 'static'
+
+# aws static file storage
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+MEDIA_LOCATION = '/media/'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_ROOT = Path(BASE_DIR)/'staticfiles'
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    Path(BASE_DIR)/'static'
-]
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+MEDIA_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, MEDIA_LOCATION)
 
-MEDIA_LOCATION = '/media/'
-MEDIA_ROOT = Path(BASE_DIR)/'media'
+# MEDIA_ROOT = Path(BASE_DIR)/'media'
 
 
 # Default primary key field type
@@ -176,25 +192,3 @@ REST_FRAMEWORK = {
 
 #spoonacular API KEY
 API_KEY = env.str('API_KEY')
-
-
-### AWS SETUP
-# AWS_ACCESS_KEY_ID = 'AKIASDVZJVYIPFFLZVGI'
-# AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
-# AWS_STORAGE_BUCKET_NAME = 'recipeexpobucket'
-# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-# AWS_DEFAULT_ACL = None
-# AWS_S3_OBJECT_PARAMETERS = {
-#     'CacheControl': 'max-age=86400',
-# }
-
-# AWS_HEADERS = {
-#     'Access-Control-Allow-Origin' : '*',
-# }
-# AWS_LOCATION = 'static'
-
-# # aws static file storage
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
-# MEDIA_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, MEDIA_LOCATION)
