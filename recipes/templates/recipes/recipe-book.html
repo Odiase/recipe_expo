@@ -51,7 +51,7 @@
         </div>
 
         <div class="recipes-wrapper recipe-book-wrapper">
-            {% if book_recipes %}
+            {% if book_recipes or api_recipes%}
                 {%for recipe in book_recipes%}
                     <div class="recipe">
                         <div class="recipe-img">

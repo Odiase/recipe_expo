@@ -16,7 +16,7 @@ from .get_recipes import api_recipe_search
 
 # Create your views here.
 def search_recipe(request):
-
+    context = {}
     if request.method == "POST":
         search_input = request.POST['search_input']
     
@@ -31,13 +31,13 @@ def search_recipe(request):
         api_recipes = api_results['api_recipes']
         base_uri = api_results['base_uri']
 
-    context = {
-        'search_results':search_results,
-        'search_input':search_input,
-        'number_of_results':search_results.count() + number_of_recipes_from_api,
-        "api_recipes": api_recipes,
-        "base_uri":base_uri,
-    }
+        context = {
+            'search_results':search_results,
+            'search_input':search_input,
+            'number_of_results':search_results.count() + number_of_recipes_from_api,
+            "api_recipes": api_recipes,
+            "base_uri":base_uri,
+        }
     return render(request,"recipes/search.html", context)
 
 
